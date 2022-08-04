@@ -21,11 +21,17 @@ async function run() {
         await client.connect();
 
         const breakfastCollection = client.db("red_onion").collection("breakfast");
+        const lunchCollection = client.db("red_onion").collection("lunch");
 
         app.get('/breakfast', async (req, res) => {
             const query = {};
             const breakfastResult = await breakfastCollection.find(query).toArray();
             res.send(breakfastResult)
+        })
+        app.get('/lunch', async (req, res) => {
+            const query = {};
+            const lunchResult = await lunchCollection.find(query).toArray();
+            res.send(lunchResult)
         })
 
         console.log('mongo connected with route')

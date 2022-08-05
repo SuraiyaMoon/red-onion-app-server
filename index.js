@@ -24,26 +24,46 @@ async function run() {
         const lunchCollection = client.db("red_onion").collection("lunch");
         const dinnerCollection = client.db("red_onion").collection("dinner");
 
+        //get all breakfast
         app.get('/breakfast', async (req, res) => {
             const query = {};
             const breakfastResult = await breakfastCollection.find(query).toArray();
             res.send(breakfastResult)
         })
+
+        //get all lunch
+        app.get('/lunch', async (req, res) => {
+            const query = {};
+            const lunchResult = await lunchCollection.find(query).toArray();
+            res.send(lunchResult)
+        })
+        //get all dinner
+        app.get('/dinner', async (req, res) => {
+            const query = {};
+            const dinnerResult = await dinnerCollection.find(query).toArray();
+            res.send(dinnerResult)
+        });
+
+        //get breakfast by id
         app.get('/breakfast/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const breakfast = await breakfastCollection.findOne(query);
             res.send(breakfast)
         })
-        app.get('/lunch', async (req, res) => {
-            const query = {};
-            const lunchResult = await lunchCollection.find(query).toArray();
-            res.send(lunchResult)
+        //get lunch by id
+        app.get('/lunch/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const lunch = await lunchCollection.findOne(query);
+            res.send(lunch)
         })
-        app.get('/dinner', async (req, res) => {
-            const query = {};
-            const dinnerResult = await dinnerCollection.find(query).toArray();
-            res.send(dinnerResult)
+        //get dinner by id
+        app.get('/dinner/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const dinner = await dinnerCollection.findOne(query);
+            res.send(dinner)
         })
 
         console.log('mongo connected with route')

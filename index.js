@@ -23,6 +23,7 @@ async function run() {
         const breakfastCollection = client.db("red_onion").collection("breakfast");
         const lunchCollection = client.db("red_onion").collection("lunch");
         const dinnerCollection = client.db("red_onion").collection("dinner");
+        const orderCollection = client.db("red_onion").collection("order");
 
         //get all breakfast
         app.get('/breakfast', async (req, res) => {
@@ -64,6 +65,14 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const dinner = await dinnerCollection.findOne(query);
             res.send(dinner)
+        });
+
+        //order post api
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const newOrder = await orderCollection.insertOne(order)
+            res.send(newOrder)
+
         })
 
         console.log('mongo connected with route')

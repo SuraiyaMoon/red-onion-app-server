@@ -7,11 +7,8 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middleware
-
 app.use(cors());
 app.use(express.json());
-
-
 
 //mongodb
 const uri = `mongodb+srv://${process.env.SECRET_USER}:${process.env.SECRET_PASS}@cluster0.s7vy7.mongodb.net/?retryWrites=true&w=majority`;
@@ -73,7 +70,14 @@ async function run() {
             const newOrder = await orderCollection.insertOne(order)
             res.send(newOrder)
 
-        })
+        });
+        //get order by email
+        app.get('/orderByEmail', async (req, res) => {
+            const email = req.query.email;
+            const searchQuery = { email: email }
+            const orders = await orderCollection.find(searchQuery).toArray();
+            res.send(orders)
+        });
 
         console.log('mongo connected with route')
     }

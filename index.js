@@ -21,6 +21,7 @@ async function run() {
         const lunchCollection = client.db("red_onion").collection("lunch");
         const dinnerCollection = client.db("red_onion").collection("dinner");
         const orderCollection = client.db("red_onion").collection("order");
+        const reviewsCollection = client.db("red_onion").collection("reviews");
 
         //get all breakfast
         app.get('/breakfast', async (req, res) => {
@@ -85,7 +86,29 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.findOne(query);
             res.send(result);
-        })
+        });
+
+        //update order info
+        app.put('/order/:id', async (req, res) => {
+            const id = req.params.id;
+            const order = req.body;
+            const filter = { _id: ObjectId(id) }
+            const option = { upsert: true };
+            const updateDoc = {
+                $set: order,
+            };
+            const result = await orderCollection.updateOne(filter, updateDoc, option);
+            res.send(result)
+
+        });
+
+        //get all review 
+        app.get('/review', async (req, res) => {
+            const query = {};
+            const result = await reviewsCollection.find(query).toArray();
+            res.send(result);
+
+        });
 
         app.delete('/order/:id', async (req, res) => {
             const id = req.params.id;
